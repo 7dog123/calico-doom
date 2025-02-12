@@ -111,7 +111,11 @@ static unsigned char* music_start;    // current music start pointer
 static unsigned char* music_end;      // current music end pointer
 static unsigned char* music_memory;   // current location of cached music
 
+#ifdef PS2
+int SDL_samples_per_midiclock;
+#else
 int samples_per_midiclock;     // multiplier for midi clocks
+#endif
 
 void M_PaintMusic();
 
@@ -660,7 +664,11 @@ void SDL2Sfx_StartMusic(unsigned char* musicPtr, unsigned char* music_startPtr, 
     basetime = SDL_GetTicks();
     musictime = 0;
     next_eventtime = 0;
+#ifdef PS2
+	SDL_samples_per_midiclock = 0;
+#else
     samples_per_midiclock = 0;
+#endif
     music = musicPtr;
     music_start = music_startPtr;
     music_end = music_endPtr;
@@ -751,10 +759,17 @@ static int M_GetEvent() {
 
     switch (cmd) {
     case 48:  // Set samples per MIDI clock
+#ifdef PS2
+		SDL_samples_per_midiclock = music[0] << 24;
+		SDL_samples_per_midiclock += music[1] << 16;
+		SDL_samples_per_midiclock += music[2] << 8;
+		SDL_samples_per_midiclock += music[3];
+#else
         samples_per_midiclock = music[0] << 24;
         samples_per_midiclock += music[1] << 16;
         samples_per_midiclock += music[2] << 8;
         samples_per_midiclock += music[3];
+#endif
         music += 4;
         break;
     case 16: {  // Note on
@@ -815,8 +830,13 @@ void M_PaintMusic() {
             break;
         }
         if (musictime == next_eventtime) {
+#ifdef PS2
+			//next_eventtime += (*music * SDL_samples_per_midiclock);
+            next_eventtime += static_cast<int>(static_cast<float>(*music * SDL_samples_per_midiclock) / 20.5);
+#else
             //next_eventtime += (*music * samples_per_midiclock);
             next_eventtime += static_cast<int>(static_cast<float>(*music * samples_per_midiclock) / 20.5);
+#endif
             music++;
         }
 
