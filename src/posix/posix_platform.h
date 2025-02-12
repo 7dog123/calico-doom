@@ -29,7 +29,8 @@
 #ifndef POSIX_PLATFORM_H__
 #define POSIX_PLATFORM_H__
 
-#if defined(__unix__) || defined(__linux__) || defined(__APPLE__)
+#if defined(__unix__) || defined(__linux__) || defined(__APPLE__) || defined(PS2)
+
 
 #ifdef __cplusplus
 extern "C" {

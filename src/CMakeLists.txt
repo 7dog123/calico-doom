@@ -86,6 +86,16 @@ set(GL_SOURCES
     gl/gl_render.cpp    gl/gl_render.h
     gl/resource.cpp     gl/resource.h)
 
+if(PS2)
+list(APPEND GL_SOURCES
+    gl/gl_drawcmd.cpp    gl/gl_drawcmd.h
+    gl/gl_framebuffer.cpp gl/gl_framebuffer.h
+	gl/gl_textures.cpp gl/gl_textures.h)
+
+set(RENDER_SOURCES
+    renderintr/ri_interface.cpp renderintr/ri_interface.h)
+endif()
+
 set(HAL_SOURCES
     hal/hal_init.c      hal/hal_init.h
     hal/hal_input.c     hal/hal_input.h
@@ -118,6 +128,11 @@ set(SDL_SOURCES
 
 add_executable(calico-doom
     ${CALICO_SOURCES} ${ELIB_SOURCES} ${GL_SOURCES} ${HAL_SOURCES}
-    ${POSIX_SOURCES} ${RB_SOURCES} ${SDL_SOURCES})
+    ${POSIX_SOURCES} ${RB_SOURCES} ${SDL_SOURCES} ${RENDER_SOURCES})
+if (PS2)
+target_compile_definitions(calico-doom PRIVATE "-DUSE_SDL2" "-Dmain=SDL_main")
+target_link_libraries(calico-doom SDL2::SDL2 SDL2::mixer modplug gskit dmakit ps2_drivers ps2gl ps2stuff dma patches)
+else()
 target_compile_definitions(calico-doom PRIVATE "-DUSE_SDL2")
 target_link_libraries(calico-doom SDL2::SDL2 SDL2::mixer ${OPENGL_gl_LIBRARY})
+endif()

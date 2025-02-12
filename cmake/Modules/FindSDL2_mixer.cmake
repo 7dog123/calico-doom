@@ -32,6 +32,7 @@ find_path(SDL2_MIXER_INCLUDE_DIR SDL_mixer.h
   HINTS
     ENV SDLMIXERDIR
     ENV SDLDIR
+	${PS2SDK}/ports
   PATH_SUFFIXES include/SDL2 include
 )
 if(SDL2_MIXER_INCLUDE_DIR)

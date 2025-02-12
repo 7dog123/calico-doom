@@ -26,7 +26,7 @@
   SOFTWARE.
 */
 
-#if defined(__unix__) || defined(__linux__) || defined(__APPLE__)
+#if defined(__unix__) || defined(__linux__) || defined(__APPLE__) || defined(PS2)
 
 #include "../elib/m_argv.h"
 

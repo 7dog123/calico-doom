@@ -110,7 +110,7 @@ void Jag68k_main(int argc, const char *const *argv)
 
    debugscreenactive = debugscreenstate;
    debugscreenrez = g_renderer->NewTextureResource("debugscreen", NULL, 256, 224, RES_FRAMEBUFFER, 0);
-   debugscreen    = g_renderer->GetTextureResourceStore(debugscreenrez);
+   debugscreen    = (uint32_t *)g_renderer->GetTextureResourceStore(debugscreenrez);
 
    // CALICO: Jag-specific
 #if 0
@@ -757,7 +757,7 @@ void EraseBlock(int x, int y, int width, int height, void *destResource)
 
    if(destResource)
    {
-      base = g_renderer->GetTextureResourceStore(destResource);
+      base = (uint32_t *)g_renderer->GetTextureResourceStore(destResource);
       g_renderer->TextureResourceSetUpdated(destResource);
    }
    else
@@ -820,7 +820,7 @@ void DrawJagobj(jagobj_t *jo, int x, int y, void *destResource)
 
    if(destResource)
    {
-      base = g_renderer->GetTextureResourceStore(destResource);
+      base = (uint32_t *)g_renderer->GetTextureResourceStore(destResource);
       g_renderer->TextureResourceSetUpdated(destResource);
    }
    else

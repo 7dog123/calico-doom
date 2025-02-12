@@ -64,6 +64,7 @@ SET(SDL2_SEARCH_PATHS
 	/Library/Frameworks
 	/usr/local
 	/usr
+	${PS2SDK}/ports # PS2DEV
 	/sw # Fink
 	/opt/local # DarwinPorts
 	/opt/csw # Blastwave

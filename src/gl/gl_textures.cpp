@@ -172,9 +172,9 @@ void GL_UpdateTextureResource(void *resource)
 //
 // Call from game code to get the 32-bit backing store of a texture resource
 //
-unsigned int *GL_GetTextureResourceStore(void *resource)
+unsigned int* GL_GetTextureResourceStore(void* resource)
 {
-    return static_cast<TextureResource *>(resource)->getPixels();
+    return reinterpret_cast<unsigned int*>(static_cast<TextureResource *>(resource)->getPixels());
 }
 
 //
