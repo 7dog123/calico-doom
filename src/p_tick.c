@@ -362,7 +362,11 @@ void DrawPlaque(jagobj_t *pl, const char *name)
          return;
       
       g_renderer->TextureResourceSetUpdated(rez);
+#ifdef PS2
       bdest = (uint32_t *)g_renderer->GetTextureResourceStore(rez);
+#else
+	  bdest = g_renderer->GetTextureResourceStore(rez);
+#endif
 
       for(y = 0; y < h; y++)
       {
@@ -406,7 +410,11 @@ void DrawSinglePlaque(jagobj_t *pl, const char *name)
          return;
 
       g_renderer->TextureResourceSetUpdated(rez);
+#ifdef PS2
       bdest = (uint32_t *)g_renderer->GetTextureResourceStore(rez);
+#else
+	  bdest = g_renderer->GetTextureResourceStore(rez);
+#endif
 
       for(y = 0; y < h; y++)
       {

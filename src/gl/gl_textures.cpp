@@ -172,10 +172,17 @@ void GL_UpdateTextureResource(void *resource)
 //
 // Call from game code to get the 32-bit backing store of a texture resource
 //
+#ifdef PS2
 unsigned int* GL_GetTextureResourceStore(void* resource)
 {
     return reinterpret_cast<unsigned int*>(static_cast<TextureResource *>(resource)->getPixels());
 }
+#else
+unsigned int *GL_GetTextureResourceStore(void *resource)
+{
+	return static_cast<TextureResource *>(resource)->getPixels();
+}
+#endif
 
 //
 // Set the indicated texture resource as needing its GL texture updated.
