@@ -75,7 +75,12 @@ static int monitornum      = 0;
 static hal_aspect_t aspect = HAL_ASPECT_NOMINAL;
 static int aspectNum       = 4;
 static int aspectDenom     = 3;
+#ifdef PS2
+static int renderer        = RENDERER_GL1_1;
+#else
 static int renderer        = RENDERER_GL4;
+#endif
+
 
 static cfgrange_t<int> swRange = { 320, 32768 };
 static cfgrange_t<int> shRange = { 224, 32768 };
@@ -128,9 +133,11 @@ static void SDL2_setRenderer()
     case RENDERER_GL1_1:
         GL_SelectRenderer();
         break;
+#ifndef PS2
     case RENDERER_GL4:
         GL4_SelectRenderer();
         break;
+#endif
     default:
         hal_platform.fatalError("Unknown value for renderer (%d)", renderer);
     }
@@ -216,7 +223,11 @@ hal_bool SDL2_SetVideoMode(int width, int height, int fs, int mnum)
    SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,  32);
    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,  1);
 
+#ifdef PS2
+   if(renderer == RENDERER_GL1_1)
+#else
    if(renderer == RENDERER_GL4)
+#endif
    {
        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);

@@ -36,7 +36,11 @@ unsigned char *music_start;    // current music start pointer
 unsigned char *music_end;      // current music end pointer
 unsigned char *music_memory;   // current location of cached music
 
+#ifdef PS2
+extern int samples_per_midiclock;     // multiplier for midi clocks
+#else
 int samples_per_midiclock;     // multiplier for midi clocks
+#endif
 
 int musictics = 0;
 
@@ -97,6 +101,7 @@ void S_Init(void)
              + (lumpinfo[lump].name[3]-'0')
              + (lumpinfo[lump].name[0] == 'P' ? 128 : 0);
          instruments[instnum] = (sfx_t *)(W_POINTLUMPNUM(lump)); // CALICO: endianness
+#ifndef PS2 
          // CALICO-TODO: also load as SfxSample
          struct SfxSample* sample;
          sample = SfxSample_LoadFromData(lumpinfo[lump].name, W_POINTLUMPNUM(lump), W_LumpLength(lump));
@@ -106,6 +111,7 @@ void S_Init(void)
          size_t loopoffset = SfxSample_GetLoopOffset(sample);
          hal_bool loop = SfxSample_GetLoop(sample);
          hal_sound.addMusicSample(instnum, data, len, loopoffset, loop);
+#endif
          lump++;
       }
  
